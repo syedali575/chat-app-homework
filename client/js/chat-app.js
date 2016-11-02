@@ -6,14 +6,14 @@ window.chat = window.chat || {};
 
 var token;
 var uname;
+var message;
 
 
 window.chat.listenForMessages(function messageHandler(data) {
-
-
+// console.log(data.message);
+$(".messages")
+.append("<p>" + data.username + "</p>" + "<p>" + data.message + "</p>")
 });
-
-
 
 
 $(".login")
@@ -48,31 +48,25 @@ $(".login")
     .on("submit", function sendMsg(event) {
       event.preventDefault()
 
-        .ajax({
+      message = $(".message").val();
+
+        $.ajax({
           url: "/chat",
           method: "POST",
-          data: JSON.stringify({ username: uname}),
+          data: JSON.stringify({ message: message}),
           headers: {
           Authorization: token,
           "Content-Type": "application/json"
           }
+        })
+
+        .done(function handleSuccess(data){
+          console.log("Worked", data);
+        })
+        .fail(function notWorking(xhr){
+          console.log(xhr,"Unable to communicate");
         });
+
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 })();
