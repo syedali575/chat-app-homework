@@ -1,8 +1,17 @@
 (function(){
 
-window.form = window.form || {};
+window.chat = window.chat || {};
 
 "use strict";
+
+var token;
+var uname;
+
+
+window.chat.listenForMessages(function messageHandler(data) {
+
+
+});
 
 
 
@@ -12,8 +21,7 @@ $(".login")
     event.preventDefault();
     // console.log("submit button working");
 
-    var uname = $(".username").val();
-
+    uname = $(".username").val();
 
     $.ajax({
       url: "/login",
@@ -23,17 +31,48 @@ $(".login")
         "Content-Type": "application/json"
       },
     })
-
-    .done(function handleSuccess(success){
-      console.log("Worked");
+    .done(function handleSuccess(data){
+      console.log("Worked", data);
+      token = data.token;
     })
 
     .fail(function notWorking(xhr){
       console.log(xhr,"Unable to communicate");
+    });
+  });
 
+
+
+
+  $(".send-message")
+    .on("submit", function sendMsg(event) {
+      event.preventDefault()
+
+        .ajax({
+          url: "/chat",
+          method: "POST",
+          data: JSON.stringify({ username: uname}),
+          headers: {
+          Authorization: token,
+          "Content-Type": "application/json"
+          }
+        });
     });
 
 
-  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 })();
