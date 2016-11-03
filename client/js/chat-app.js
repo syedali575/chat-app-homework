@@ -1,8 +1,9 @@
 (function(){
 
+"use strict";
+
 window.chat = window.chat || {};
 
-"use strict";
 
 var token;
 var uname;
@@ -10,9 +11,9 @@ var message;
 
 
 window.chat.listenForMessages(function messageHandler(data) {
-// console.log(data.message);
-$(".messages")
-.append("<p>" + data.username + "</p>" + "<p>" + data.message + "</p>")
+  // console.log(data.message);
+  $(".messages")
+    .append("<p>" + data.username + "</p>" + "<p>" + data.message + "</p>");
 });
 
 
@@ -31,14 +32,16 @@ $(".login")
         "Content-Type": "application/json"
       },
     })
+
     .done(function handleSuccess(data){
-      console.log("Worked", data);
+      // console.log("Worked", data);
       token = data.token;
     })
 
     .fail(function notWorking(xhr){
       console.log(xhr,"Unable to communicate");
     });
+
   });
 
 
@@ -46,7 +49,7 @@ $(".login")
 
   $(".send-message")
     .on("submit", function sendMsg(event) {
-      event.preventDefault()
+      event.preventDefault();
 
       message = $(".message").val();
 
@@ -63,6 +66,7 @@ $(".login")
         .done(function handleSuccess(data){
           console.log("Worked", data);
         })
+
         .fail(function notWorking(xhr){
           console.log(xhr,"Unable to communicate");
         });
